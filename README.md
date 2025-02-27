@@ -81,7 +81,7 @@ Submit a pull request
 For any issues, feel free to open an issue or reach out:
 
 📧 Email: asefehmed1@gmail.com
-🐦 Linkedin: [@your-handle](https://www.linkedin.com/in/asaf-ahmadov/)
+🐦 Linkedin: (https://www.linkedin.com/in/asaf-ahmadov/)
 
 ⭐ Support
 If you find this project useful, please star ⭐ the repo to show support! 🚀
