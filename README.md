@@ -1,7 +1,8 @@
 🛡️ Gradle Security Checker
 Automated security scanning for Gradle dependencies using OSV API & CoreUI
 
-![image](https://github.com/user-attachments/assets/289178a0-d55e-46fc-8bb1-a99f9b9b3e71)
+![image](https://github.com/user-attachments/assets/69333720-a7ac-4159-a94b-b0e907fe7556)
+
 
 
 📌 Overview
