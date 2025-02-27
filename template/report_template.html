@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gradle Dependencies Security Report</title>
+
+  <!-- CoreUI CSS -->
+  <link 
+    rel="stylesheet" 
+    href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.5.0/dist/css/coreui.min.css" 
+    crossorigin="anonymous"
+  >
+
+  <!-- Ek icon setleri (opsiyonel) -->
+  <link 
+    rel="stylesheet" 
+    href="https://cdn.jsdelivr.net/npm/@coreui/icons@2.1.0/css/all.min.css"
+    crossorigin="anonymous"
+  >
+
+  <!-- Kendi özel stil dosyamız -->
+  <link rel="stylesheet" href="static/styles.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
+    <div class="sidebar-brand d-none d-md-flex">
+      <h3 class="text-white m-3">CoreUI Demo</h3>
+    </div>
+    <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
+      <li class="nav-item">
+        <a class="nav-link active" href="#">
+          <svg class="nav-icon">
+            <use xlink:href="https://coreui.io/icons/free.svg#cil-speedometer"></use>
+          </svg>
+          Dashboard
+        </a>
+      </li>
+      <li class="nav-item"><a class="nav-link" href="#">Components</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
+    </ul>
+    <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
+  </div>
+
+  <!-- Wrapper -->
+  <div class="wrapper d-flex flex-column min-vh-100 bg-light">
+    <!-- Header -->
+    <header class="header header-sticky mb-4">
+      <div class="container-fluid">
+        <button class="btn btn-light" type="button" onclick="document.body.classList.toggle('sidebar-show')">
+          <svg class="icon">
+            <use xlink:href="https://coreui.io/icons/free.svg#cil-menu"></use>
+          </svg>
+        </button>
+        <a class="header-brand" href="#">Gradle Security Report</a>
+      </div>
+      <div class="header-divider"></div>
+    </header>
+
+    <!-- Body -->
+    <div class="body flex-grow-1 px-3">
+      <div class="container-lg">
+        
+        <!-- Cards row -->
+        <div class="row">
+          <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-primary mb-3">
+              <div class="card-body pb-0">
+                <div class="text-value-lg">{{ total_count }}</div>
+                <div>Total Dependencies</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-success mb-3">
+              <div class="card-body pb-0">
+                <div class="text-value-lg">{{ safe_count }}</div>
+                <div>Safe</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-danger mb-3">
+              <div class="card-body pb-0">
+                <div class="text-value-lg">{{ vulnerable_count }}</div>
+                <div>Vulnerable</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-warning mb-3">
+              <div class="card-body pb-0">
+                <div class="text-value-lg">{{ vulnerability_rate }}%</div>
+                <div>Vulnerability Rate</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chart and Table row -->
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card mb-4">
+              <div class="card-header">Vulnerability Chart</div>
+              <div class="card-body">
+                <canvas 
+                  id="vulnerabilityChart"
+                  data-safe-count="{{ safe_count }}"
+                  data-vulnerable-count="{{ vulnerable_count }}"
+                >
+                </canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="card mb-4">
+              <div class="card-header">Dependencies Detail</div>
+              <div class="card-body table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                  <thead>
+                    <tr>
+                      <th>Library Group</th>
+                      <th>Library Name</th>
+                      <th>Version</th>
+                      <th>Status</th>
+                      <th>CVE Details</th>
+                      <th>Severity</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{ table_rows }}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- container-lg -->
+    </div> <!-- body -->
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="ms-auto">
+        Powered by <a href="https://coreui.io" target="_blank">CoreUI</a> & 
+        <a href="https://osv.dev" target="_blank">OSV API</a>
+      </div>
+    </footer>
+  </div> <!-- wrapper -->
+
+  <!-- CoreUI JS -->
+  <script 
+    src="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.5.0/dist/js/coreui.bundle.min.js" 
+    crossorigin="anonymous"
+  ></script>
+  
+  <!-- Kendi script dosyamız -->
+  <script src="static/script.js"></script>
+</body>
+</html>

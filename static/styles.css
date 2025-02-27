@@ -1,0 +1,42 @@
+/* Arkaplan rengini, yazı tipi vs. */
+body {
+  background-color: #f4f4f4;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Sidebar'daki aktif linkin rengi */
+.sidebar .nav-link.active {
+  background-color: #2f5ea9 !important;
+}
+
+/* Header tasarımı */
+.header {
+  background-color: #fff;
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* Kartlara küçük bir gölge */
+.card {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Renkli severity tanımları */
+.critical {
+  color: red; 
+  font-weight: bold;
+}
+.high {
+  color: orange; 
+  font-weight: bold;
+}
+.medium {
+  color: darkgoldenrod; 
+  font-weight: bold;
+}
+.low {
+  color: green; 
+  font-weight: bold;
+}
+.unknown {
+  color: #666;
+}
