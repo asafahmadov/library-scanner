@@ -1,22 +1,27 @@
 ---
-- name: Add user and configure SSH access
+- name: Clean demo (no privilege escalation)
   hosts: localhost
-  become: yes
+  connection: local
+  gather_facts: false
   tasks:
-    - name: Ensure user is present
-      user:
-        name: new_user
-        state: present
-        groups: wheel
+    - name: Greeting
+      ansible.builtin.debug:
+        msg: "automansible: AI-generated, merged via PR, executed on a runner."
 
-    - name: Generate SSH key pair for the user
-      authorized_key:
-        user: new_user
-        state: present
-        key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+    - name: Who am I
+      ansible.builtin.command: whoami
+      register: who
+      changed_when: false
 
-    - name: Ensure ssh service is running and enabled
-      service:
-        name: ssh
-        state: started
-        enabled: yes
+    - name: Show runner user
+      ansible.builtin.debug:
+        msg: "Running as {{ who.stdout }}"
+
+    - name: UTC time
+      ansible.builtin.command: date -u
+      register: now
+      changed_when: false
+
+    - name: Show time
+      ansible.builtin.debug:
+        msg: "UTC: {{ now.stdout }}"
