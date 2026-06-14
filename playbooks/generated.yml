@@ -1,0 +1,22 @@
+---
+- name: Add user and configure SSH access
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Ensure user is present
+      user:
+        name: new_user
+        state: present
+        groups: wheel
+
+    - name: Generate SSH key pair for the user
+      authorized_key:
+        user: new_user
+        state: present
+        key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+
+    - name: Ensure ssh service is running and enabled
+      service:
+        name: ssh
+        state: started
+        enabled: yes
