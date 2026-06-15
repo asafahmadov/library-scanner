@@ -1,13 +1,12 @@
-"""Hardcoded secrets (secrets-scan demo target).
+"""Secrets loaded from the environment — hardened by apPosture auto-fix.
 
-All values are DUMMIES — AWS's public EXAMPLE keys and obvious fakes. Not real.
+CWE-798 fixed: no hardcoded credentials; load from the environment / a secrets
+manager at runtime. Set these as masked CI / deployment variables.
 """
-# CWE-798: hardcoded credentials.
-AWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE"
-AWS_SECRET_ACCESS_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
-DB_PASSWORD = "SuperSecret123!"
-GITHUB_TOKEN = "ghp_FAKE0000000000000000000000000000000000"
+import os
 
-PRIVATE_KEY = """-----BEGIN RSA PRIVATE KEY-----
-MIIEowIBAAKCAQEA1234FAKEDEMOKEYDONOTUSEabcdefghijklmnopqrstuvwxyz00
------END RSA PRIVATE KEY-----"""
+AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
+AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
+DB_PASSWORD = os.environ["DB_PASSWORD"]
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
+PRIVATE_KEY = os.environ.get("PRIVATE_KEY", "")

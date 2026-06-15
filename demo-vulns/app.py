@@ -1,6 +1,6 @@
-"""Intentionally vulnerable Flask app (SAST demo target)."""
+"""Flask app — hardened by apPosture auto-fix."""
 import hashlib
-import pickle
+import json
 import sqlite3
 import subprocess
 
@@ -12,37 +12,38 @@ app = Flask(__name__)
 
 @app.route("/user")
 def get_user():
-    uid = request.args.get("id")
+    uid = request.args.get("id", "")
     conn = sqlite3.connect("app.db")
-    # CWE-89: SQL injection — untrusted input concatenated into the query.
-    query = "SELECT * FROM users WHERE id = '" + uid + "'"
-    return str(conn.execute(query).fetchall())
+    # CWE-89 fixed: parameterized query, no string concatenation.
+    return str(conn.execute("SELECT * FROM users WHERE id = ?", (uid,)).fetchall())
 
 
 @app.route("/ping")
 def ping():
-    host = request.args.get("host")
-    # CWE-78: OS command injection — untrusted input into a shell.
-    return subprocess.check_output("ping -c 1 " + host, shell=True)
+    host = request.args.get("host", "")
+    # CWE-78 fixed: argument array (no shell) + input validation.
+    if not host.replace(".", "").replace("-", "").isalnum():
+        return "invalid host", 400
+    return subprocess.check_output(["ping", "-c", "1", host])
 
 
 @app.route("/load")
 def load():
-    data = request.args.get("data")
-    # CWE-502: insecure deserialization of untrusted data.
-    return str(pickle.loads(bytes.fromhex(data)))
+    data = request.args.get("data", "")
+    # CWE-502 fixed: JSON instead of pickle — no code execution.
+    return str(json.loads(data))
 
 
 def weak_hash(password: str) -> str:
-    # CWE-327: weak hashing algorithm.
-    return hashlib.md5(password.encode()).hexdigest()
+    # CWE-327 fixed: SHA-256 (use bcrypt/argon2 as a KDF for real passwords).
+    return hashlib.sha256(password.encode()).hexdigest()
 
 
 def load_config(text: str):
-    # CWE-20: unsafe YAML load executes arbitrary tags.
-    return yaml.load(text)
+    # CWE-20 fixed: safe_load — no arbitrary tags.
+    return yaml.safe_load(text)
 
 
 if __name__ == "__main__":
-    # CWE-489: debug server bound to all interfaces.
-    app.run(host="0.0.0.0", debug=True)
+    # CWE-489 fixed: bound to loopback, debug off.
+    app.run(host="127.0.0.1", debug=False)
