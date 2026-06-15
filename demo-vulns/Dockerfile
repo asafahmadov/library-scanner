@@ -1,16 +1,18 @@
-# Intentionally misconfigured image (IaC + container demo target).
-FROM python:3.4
+# Hardened image — apPosture auto-fix.
+# - modern, supported base (was python:3.4, EOL with 100s of CVEs)
+# - no secret baked into a layer
+# - runs as a non-root user
+# - no SSH exposure
+FROM python:3.12-slim
 
-# CWE-798: secret baked into the image layer.
-ENV API_KEY="AKIAIOSFODNN7EXAMPLE"
-
-RUN pip install flask==0.12.2 requests==2.19.1
+RUN pip install --no-cache-dir flask==2.3.3 requests==2.32.3
 
 COPY . /app
 WORKDIR /app
 
-# Runs as root, exposes SSH — CIS misconfigurations.
-USER root
-EXPOSE 22
+RUN useradd --create-home appuser
+USER appuser
+
+EXPOSE 8000
 
 CMD ["python", "app.py"]
